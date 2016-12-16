@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>vTimer</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        app-clock {
+            font-family: mono;
+        }
+
+        .container {
+          font-size: 4em;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+    </style>
+
+</head>
+
+<body ng-app="app">
+    <div class="container">
+      <app-clock>loading...</app-clock>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('app', []);
+
+        app.directive('appClock', function() {
+            function Controller($element) {
+                // $element.text('yolo test');
+
+                function zeroFill(input, length) {
+                    input = String(input);
+                    while (input.length < length) {
+                        input = '0' + input;
+                    }
+
+                    return input;
+                }
+
+                function updateDate() {
+                    var date = new Date();
+
+                    var year = date.getFullYear();
+                    var month = zeroFill(date.getMonth(), 2);
+                    var day = zeroFill(date.getDay(), 2);
+
+                    var hours = zeroFill(date.getHours(), 2);
+                    var minutes = zeroFill(date.getMinutes(), 2);
+                    var seconds = zeroFill(date.getSeconds(), 2);
+
+                    var milliseconds = zeroFill(date.getMilliseconds(), 3);
+
+                    var display = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+                    console.log(display)
+
+                    $element.text(display);
+
+                    window.requestAnimationFrame(updateDate);
+                }
+
+                window.requestAnimationFrame(updateDate);
+
+            }
+
+            return {
+                controller: Controller
+            }
+        })
+    </script>
+
+</body>
+
+</html>
